@@ -42,4 +42,31 @@ describe('useStorage', () => {
 
     assert.equal(oStorage.abc, 'fed');
   });
+
+  it('setter mutations affects store object - object', async () => {
+    const [storage, setStorage] = await useStorage<any>(path, {
+      defaultValue: { abc: 'def' },
+      immediatelySync: true,
+      overrideDefault: false
+    });
+
+    await setStorage({
+      abc: 'defa'
+    });
+
+    assert.equal(storage.abc, 'defa');
+  });
+
+  it('setter mutations affects store object - array', async () => {
+    const [storage, setStorage] = await useStorage<any>(path, {
+      defaultValue: [],
+      immediatelySync: true,
+      overrideDefault: false
+    });
+
+    await setStorage((prevValue: any) => [...prevValue, 42]);
+
+    assert.equal(storage.length, 1);
+    assert.equal(storage[0], 42);
+  });
 });

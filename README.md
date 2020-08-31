@@ -23,7 +23,7 @@ import useStorage from 'use-fs-storage';
 const [storage, setStorage] = useStorage('example.json', {
     defaultValue: [],      // default value for the storage
     immediatelySync: true, // does library should sync data immediately
-    overrideDefault: true, // does file content should override value above
+    overrideDefault: true, // does read file content should override storage value (if not and immadiatelySync is true - defaultValue will be saved into json file)
 });
 
 // among some piece of code
