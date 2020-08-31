@@ -4,6 +4,10 @@
   "main": "dist/use-storage.cjs.js",
   "module": "dist/use-storage.esm.js",
   "types": "dist/types/src/main.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aliath/use-fs-storage.git"
+  },
   "devDependencies": {
     "@rollup/plugin-typescript": "^5.0.2",
     "@types/mocha": "^8.0.3",

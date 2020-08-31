@@ -10,7 +10,7 @@ yarn add use-fs-storage
 
 or 
 ```bash
-npm i use-fs-storage
+npm i --save use-fs-storage
 ```
 
 ## Usage
