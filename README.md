@@ -30,6 +30,9 @@ await setStorage(previousValue => {
     return [...previousValue, newItem];
 });
 
+// ...  or just
+await setStorage([firstItem, secondItem]);
+
 // file saved, do whatever
 ```
 
