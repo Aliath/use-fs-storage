@@ -1,3 +1,5 @@
+![](https://github.com/Aliath/use-fs-storage/workflows/test/badge.svg)
+
 ## use-fs-storage
 Basic wrapper for file storage strongly inspired by react hooks. It allows us to storage variable passed through reference (such as object, array and other possible JSON values). Make react-like data flow with no effort!
 
