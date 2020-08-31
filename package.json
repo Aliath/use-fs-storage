@@ -1,5 +1,5 @@
 {
-  "name": "use-storage",
+  "name": "use-fs-storage",
   "version": "1.0.0",
   "main": "dist/use-storage.cjs.js",
   "module": "dist/use-storage.esm.js",
