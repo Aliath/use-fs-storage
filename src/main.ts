@@ -67,6 +67,18 @@ export const useStorage = async <T>(filePath: string, argsConfig?: StorageConfig
 		}
 
 		await writeFile(filePath, JSON.stringify(result));
+
+		if (Array.isArray(defaultValue)) {
+			defaultValue.length = 0;
+		} else {
+			for (let key in defaultValue) {
+				delete defaultValue[key];
+			}
+		}
+
+		for (let key of Object.keys(result)) {
+			defaultValue[key] = result[key];
+		}
 	}];
 };
 
