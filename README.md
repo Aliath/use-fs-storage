@@ -29,6 +29,7 @@ const [storage, setStorage] = useStorage('example.json', {
 // among some piece of code
 
 await setStorage(previousValue => {
+    // returned value is moved into storage reference, avaliable via "storage" variable from 3rd line
     return [...previousValue, newItem];
 });
 
