@@ -47,7 +47,11 @@ export const useStorage = async <T>(filePath: string, argsConfig?: StorageConfig
 
 	if (config.immediatelySync) {
 		if (config.overrideDefault) {
-			defaultValue = JSON.parse(await readFile(filePath));
+			try {
+				defaultValue = JSON.parse(await readFile(filePath));
+			} catch {
+				console.warn(`File "${filePath}" does not exists - take default value instead.`);
+			}
 		} else {
 			await writeFile(filePath, JSON.stringify(defaultValue));
 		}
