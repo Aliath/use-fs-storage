@@ -61,7 +61,7 @@ export const useStorage = async <T>(filePath: string, argsConfig?: StorageConfig
 		let result: StorageValue<T>;
 
 		if (payloadCallback instanceof Function) {
-			result = payloadCallback(defaultValue);
+			result = payloadCallback(copyObject(defaultValue));
 		} else {
 			result = payloadCallback;
 		}
