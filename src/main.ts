@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import { promises as fs } from 'fs';
 
 export type StorageValue<T> = Array<T> | T;
 export type StorageFactory<T> = (oldValue: StorageValue<T>) => StorageValue<T>;
@@ -19,26 +19,6 @@ export const defaultConfig: StorageConfig = Object.freeze({
 	defaultValue: {}
 });
 
-const readFile = (filePath: string): Promise<string> => new Promise((resolve, reject) => {
-	fs.readFile(filePath, { encoding: 'utf-8' }, (error, data) => {
-		if (error) {
-			reject(error);
-		} else {
-			resolve(data);
-		}
-	});
-});
-
-const writeFile = (filePath: string, content: string) => new Promise((resolve, reject) => {
-	fs.writeFile(filePath, content, { encoding: 'utf-8' }, (error => {
-		if (error) {
-			reject(error);
-		} else {
-			resolve();
-		}
-	}))
-});
-
 const copyObject = <T>(object: StorageValue<T>) => JSON.parse(JSON.stringify(object));
 
 export const useStorage = async <T>(filePath: string, argsConfig?: StorageConfig): Promise<StorageOutput<T>> => {
@@ -48,12 +28,14 @@ export const useStorage = async <T>(filePath: string, argsConfig?: StorageConfig
 	if (config.immediatelySync) {
 		if (config.overrideDefault) {
 			try {
-				defaultValue = JSON.parse(await readFile(filePath));
+				const fileContent = (await fs.readFile(filePath, { encoding: 'utf8' })).toString();
+				defaultValue = JSON.parse(fileContent);
 			} catch {
 				console.warn(`File "${filePath}" does not exists - take default value instead.`);
 			}
 		} else {
-			await writeFile(filePath, JSON.stringify(defaultValue));
+			const fileContent = JSON.stringify(defaultValue);
+			await fs.writeFile(filePath, fileContent, { encoding: 'utf8' });
 		}
 	}
 
@@ -66,7 +48,8 @@ export const useStorage = async <T>(filePath: string, argsConfig?: StorageConfig
 			result = payloadCallback;
 		}
 
-		await writeFile(filePath, JSON.stringify(result));
+		const fileContent = JSON.stringify(result);
+		await fs.writeFile(filePath, fileContent, { encoding: 'utf8' });
 
 		if (Array.isArray(defaultValue)) {
 			defaultValue.length = 0;
