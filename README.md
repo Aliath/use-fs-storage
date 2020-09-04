@@ -1,4 +1,7 @@
-![](https://github.com/Aliath/use-fs-storage/workflows/test/badge.svg)
+![test coverage](https://github.com/Aliath/use-fs-storage/workflows/test/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/Aliath/use-fs-storage/badge.svg?branch=master)](https://coveralls.io/github/Aliath/use-fs-storage?branch=master)
+![npm bundle size](https://img.shields.io/bundlephobia/min/use-fs-storage)
+![npm](https://img.shields.io/npm/dw/use-fs-storage?style=plastic)
 
 ## use-fs-storage
 Basic wrapper for file storage strongly inspired by react hooks. It allows us to storage variable passed through reference (such as object, array and other possible JSON values). Make react-like data flow with no effort!
@@ -20,23 +23,35 @@ npm i --save use-fs-storage
 ```typescript
 import useStorage from 'use-fs-storage';
 
-const [storage, setStorage] = useStorage('example.json', {
-    defaultValue: [],      // default value for the storage
-    immediatelySync: true, // does library should sync data immediately
-    overrideDefault: true, // does read file content should override storage value (if not and immadiatelySync is true - defaultValue will be saved into json file)
-});
 
-// among some piece of code
+// first use
+(async () => {
+  const [users, setUsers] = await useStorage('users.json', {
+    defaultValue: [],
+    immediatelySync: true, // sync right after create store
+    overrideDefault: true, // if specified path exists it will override default value
+  });
 
-await setStorage(previousValue => {
-    // returned value is moved into storage reference, avaliable via "storage" variable from 3rd line
-    return [...previousValue, newItem];
-});
+  console.log(users); // []
+  await setUsers([1, 2, 3]); // save value of "users" variable to "users.json"
+  console.log(users); // [1, 2, 3]
+  await setUsers(previousValue => previousValue.map(item => item * 2));
+  console.log(users); /// [2, 4, 6] - same as "users.json" value
+})();
 
-// ...  or just
-await setStorage([firstItem, secondItem]);
 
-// file saved, do whatever
+// second use
+(async () => {
+  const [users, setUsers] = await useStorage('users.json', {
+    defaultValue: [],
+    immediatelySync: true,
+    overrideDefault: true,
+  });
+
+  console.log(users); // [2, 4, 6]
+  await setUsers(previousValue => previousValue.map(item => item * 2));
+  console.log(users); /// [4, 8, 12] - same as "users.json" value
+})();
 ```
 
 ## Contributing

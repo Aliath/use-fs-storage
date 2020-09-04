@@ -2,3 +2,5 @@
 node_modules
 dist
 example.json
+.nyc_output
+coverage
